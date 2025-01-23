@@ -1,0 +1,9 @@
+<h1>Details</h1>
+
+<p>Name: {{ data.name }}</p>
+<p>Description: {{ data.description }}</p>
+<p>SKU: {{ data.sku }}</p>
+<p>Price: {{ data.cost | currency }}</p>
+<p>Additional information: {{ data.profile | json }}</p>
+
+<button (click)="dialogRef.close()">close</button>

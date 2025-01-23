@@ -28,29 +28,26 @@ export class ProductsStore extends ComponentStore<ProductsStoreState> {
       switchMap(() =>
         this.productsService.getProducts().pipe(
           tapResponse(
-            (items) => {
-              console.log(items);
-              this.fetchItemsSuccess(items);
-            },
-            () => null
-          )
-        )
-      )
-    )
+            (items) => this.fetchItemsSuccess(items),
+            () => null,
+          ),
+        ),
+      ),
+    ),
   );
 
   private readonly setIsFetching = this.updater(
     (state, isFetching: boolean) => ({
       ...state,
       isFetching,
-    })
+    }),
   );
   private readonly fetchItemsSuccess = this.updater(
     (state, items: Product[]) => ({
       ...state,
       list: items,
       isFetching: false,
-    })
+    }),
   );
 
   constructor() {
