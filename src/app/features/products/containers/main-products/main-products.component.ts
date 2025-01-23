@@ -3,6 +3,7 @@ import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { DeletionDialogComponent } from '../../../../shared/components/deletion-dialog/deletion-dialog.component';
 import { DetailsDialogComponent } from '../../components/details-dialog/details-dialog.component';
+import { EditCreateDialogComponent } from '../../components/edit-create-dialog/edit-create-dialog.component';
 import { Product } from '../../models/product.model';
 import { ProductsService } from '../../services/products.service';
 import { ProductsStore } from '../../state/products.store';
@@ -43,8 +44,15 @@ export class MainProductsComponent implements OnInit {
 
     dialogRef.closed.subscribe((result) =>
       result?.shouldRemove
-        ? this.productsStore.deleteProduct(product.id)
+        ? this.productsStore.deleteProduct(product.id!)
         : null,
     );
+  }
+
+  openEditCreateDialog(target: 'create' | 'edit', product?: Product): void {
+    this.dialog.open<Product>(EditCreateDialogComponent, {
+      width: '300px',
+      data: product,
+    });
   }
 }

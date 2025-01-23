@@ -1,3 +1,5 @@
+<button (click)="openEditCreateDialog('create')">+ New product</button>
+
 @if (isFetching$ | async) {
   Loading...
 } @else {
@@ -8,7 +10,7 @@
         class="products-table__item"
         (click)="openDetailsDialog(product)"
       >
-        <div>{{ $index + 1 }}</div>
+        <div>{{ product.id }}</div>
         <div>{{ product.sku }}</div>
         <div class="products-table__name">{{ product.name }}</div>
         <div>{{ product.cost | currency }}</div>

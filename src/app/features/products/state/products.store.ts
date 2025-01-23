@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { tapResponse } from '@ngrx/operators';
-import { Observable, switchMap, tap } from 'rxjs';
+import { filter, Observable, switchMap, tap } from 'rxjs';
 import { Product } from '../models/product.model';
 import { ProductsService } from '../services/products.service';
 
@@ -38,6 +38,7 @@ export class ProductsStore extends ComponentStore<ProductsStoreState> {
 
   readonly deleteProduct = this.effect((data$: Observable<number>) =>
     data$.pipe(
+      filter((id) => !!id),
       switchMap((id) =>
         this.productsService.deleteProduct(id).pipe(
           tapResponse(

@@ -1,8 +1,8 @@
 export interface Product {
-  id: number;
+  id?: number;
   name: string;
   description: string;
   sku: string;
   cost: number;
-  profile: Record<string, string>;
+  profile: Record<string, any>;
 }
