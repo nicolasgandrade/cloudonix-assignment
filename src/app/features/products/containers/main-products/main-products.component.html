@@ -12,6 +12,13 @@
         <div>{{ product.sku }}</div>
         <div class="products-table__name">{{ product.name }}</div>
         <div>{{ product.cost | currency }}</div>
+        <div>
+          <button
+            (click)="openDeletionDialog(product); $event.stopPropagation()"
+          >
+            Del
+          </button>
+        </div>
       </div>
     }
   </div>
