@@ -26,16 +26,25 @@ export class MainProductsComponent implements OnInit {
   }
 
   openDetailsDialog(product: Product): void {
-    const dialogRef = this.dialog.open(DetailsDialogComponent, {
+    this.dialog.open(DetailsDialogComponent, {
       width: '300px',
       data: product,
     });
   }
 
   openDeletionDialog(product: Product): void {
-    const dialogRef = this.dialog.open(DeletionDialogComponent, {
-      width: '300px',
-      data: product,
-    });
+    const dialogRef = this.dialog.open<{ shouldRemove: boolean }>(
+      DeletionDialogComponent,
+      {
+        width: '300px',
+        data: product,
+      },
+    );
+
+    dialogRef.closed.subscribe((result) =>
+      result?.shouldRemove
+        ? this.productsStore.deleteProduct(product.id)
+        : null,
+    );
   }
 }

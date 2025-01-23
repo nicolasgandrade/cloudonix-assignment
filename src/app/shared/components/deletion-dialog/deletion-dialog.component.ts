@@ -7,5 +7,5 @@ import { Component, inject } from '@angular/core';
   styleUrl: './deletion-dialog.component.scss',
 })
 export class DeletionDialogComponent {
-  readonly dialogRef = inject(DialogRef);
+  readonly dialogRef = inject(DialogRef<{ shouldRemove: boolean }>);
 }

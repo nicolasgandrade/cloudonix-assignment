@@ -15,4 +15,10 @@ export class ProductsService {
       headers: this.headers,
     });
   }
+
+  deleteProduct(id: number): Observable<void> {
+    return this.http.delete<undefined>(`${this.resourceUrl}/${id}`, {
+      headers: this.headers,
+    });
+  }
 }

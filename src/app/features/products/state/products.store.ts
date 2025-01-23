@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { tapResponse } from '@ngrx/operators';
-import { switchMap, tap } from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 import { Product } from '../models/product.model';
 import { ProductsService } from '../services/products.service';
 
@@ -36,6 +36,19 @@ export class ProductsStore extends ComponentStore<ProductsStoreState> {
     ),
   );
 
+  readonly deleteProduct = this.effect((data$: Observable<number>) =>
+    data$.pipe(
+      switchMap((id) =>
+        this.productsService.deleteProduct(id).pipe(
+          tapResponse(
+            () => this.deleteItemSuccess(id),
+            () => null,
+          ),
+        ),
+      ),
+    ),
+  );
+
   private readonly setIsFetching = this.updater(
     (state, isFetching: boolean) => ({
       ...state,
@@ -49,6 +62,11 @@ export class ProductsStore extends ComponentStore<ProductsStoreState> {
       isFetching: false,
     }),
   );
+
+  private readonly deleteItemSuccess = this.updater((state, id: number) => ({
+    ...state,
+    list: state.list.filter((item) => item.id !== id),
+  }));
 
   constructor() {
     super(initialState);
