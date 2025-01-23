@@ -10,6 +10,6 @@ import { ProductFormComponent } from '../product-form/product-form.component';
   imports: [ProductFormComponent],
 })
 export class EditCreateDialogComponent {
-  readonly dialogRef = inject(DialogRef<Product>);
+  readonly dialogRef = inject(DialogRef<Partial<Product>>);
   readonly data = inject(DIALOG_DATA);
 }

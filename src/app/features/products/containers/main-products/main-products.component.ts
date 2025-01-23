@@ -50,9 +50,22 @@ export class MainProductsComponent implements OnInit {
   }
 
   openEditCreateDialog(target: 'create' | 'edit', product?: Product): void {
-    this.dialog.open<Product>(EditCreateDialogComponent, {
-      width: '300px',
-      data: product,
+    const dialogRef = this.dialog.open<Partial<Product>>(
+      EditCreateDialogComponent,
+      {
+        width: '300px',
+        data: product,
+      },
+    );
+
+    dialogRef.closed.subscribe((product) => {
+      if (!product) {
+        return;
+      }
+
+      if (target === 'create') {
+        this.productsStore.createProduct(product);
+      }
     });
   }
 }

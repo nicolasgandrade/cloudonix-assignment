@@ -50,6 +50,19 @@ export class ProductsStore extends ComponentStore<ProductsStoreState> {
     ),
   );
 
+  readonly createProduct = this.effect((data$: Observable<Partial<Product>>) =>
+    data$.pipe(
+      switchMap((product) =>
+        this.productsService.createProduct(product).pipe(
+          tapResponse(
+            (created) => this.createItemSuccess(created),
+            () => null,
+          ),
+        ),
+      ),
+    ),
+  );
+
   private readonly setIsFetching = this.updater(
     (state, isFetching: boolean) => ({
       ...state,
@@ -68,6 +81,13 @@ export class ProductsStore extends ComponentStore<ProductsStoreState> {
     ...state,
     list: state.list.filter((item) => item.id !== id),
   }));
+
+  private readonly createItemSuccess = this.updater(
+    (state, created: Product) => ({
+      ...state,
+      list: [...state.list, created],
+    }),
+  );
 
   constructor() {
     super(initialState);

@@ -21,4 +21,10 @@ export class ProductsService {
       headers: this.headers,
     });
   }
+
+  createProduct(product: Partial<Product>): Observable<Product> {
+    return this.http.post<Product>(this.resourceUrl, product, {
+      headers: this.headers,
+    });
+  }
 }
