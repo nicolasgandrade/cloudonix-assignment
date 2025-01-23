@@ -1,0 +1,6 @@
+<form>
+  <label for="token">Authorization key*</label>
+  <input required type="text" name="token" [(ngModel)]="token" />
+
+  <button type="submit" [disabled]="!token?.trim()">Sign in</button>
+</form>
