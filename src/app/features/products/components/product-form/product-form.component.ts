@@ -5,6 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { IMaskModule } from 'angular-imask';
 import { Product } from '../../models/product.model';
 import { ProductType } from '../../utils/product-form.utils';
 
@@ -12,12 +13,22 @@ import { ProductType } from '../../utils/product-form.utils';
   selector: 'product-form',
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, IMaskModule],
 })
 export class ProductFormComponent {
   @Output() productSubmitted = new EventEmitter<Partial<Product>>();
 
   readonly productTypes = ProductType;
+  readonly maskOptions = {
+    mask: Number,
+    min: 0,
+    scale: 2,
+    signed: false,
+    thousandsSeparator: ',',
+    padFractionalZeros: false,
+    normalizeZeros: true,
+    radix: '.',
+  };
 
   readonly form = new FormGroup({
     name: new FormControl('', {

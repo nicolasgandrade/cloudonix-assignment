@@ -11,7 +11,12 @@
 
   <div class="product-form__control">
     <label>Cost</label>
-    <input type="number" min="0" step=".01" formControlName="cost" />
+    <input
+      type="text"
+      formControlName="cost"
+      [imask]="maskOptions"
+      [unmask]="'typed'"
+    />
   </div>
 
   <div class="product-form__control">
