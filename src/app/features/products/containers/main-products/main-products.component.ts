@@ -58,13 +58,15 @@ export class MainProductsComponent implements OnInit {
       },
     );
 
-    dialogRef.closed.subscribe((product) => {
-      if (!product) {
+    dialogRef.closed.subscribe((receivedProduct) => {
+      if (!receivedProduct) {
         return;
       }
 
       if (target === 'create') {
-        this.productsStore.createProduct(product);
+        this.productsStore.createProduct(receivedProduct);
+      } else {
+        this.productsStore.editProduct({ ...receivedProduct, id: product?.id });
       }
     });
   }

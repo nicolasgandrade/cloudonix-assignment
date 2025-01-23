@@ -27,4 +27,10 @@ export class ProductsService {
       headers: this.headers,
     });
   }
+
+  editProduct(id: number, product: Partial<Product>): Observable<Product> {
+    return this.http.patch<Product>(`${this.resourceUrl}/${id}`, product, {
+      headers: this.headers,
+    });
+  }
 }

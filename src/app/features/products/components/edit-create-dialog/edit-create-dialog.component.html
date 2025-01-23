@@ -1,2 +1,2 @@
 <h1>Product form</h1>
-<product-form (productSubmitted)="dialogRef.close($event)" />
+<product-form [product]="data" (productSubmitted)="dialogRef.close($event)" />

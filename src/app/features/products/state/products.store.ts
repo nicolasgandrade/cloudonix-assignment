@@ -63,6 +63,20 @@ export class ProductsStore extends ComponentStore<ProductsStoreState> {
     ),
   );
 
+  readonly editProduct = this.effect((data$: Observable<Partial<Product>>) =>
+    data$.pipe(
+      filter((product) => !!product?.id),
+      switchMap((product) =>
+        this.productsService.editProduct(product.id!, product).pipe(
+          tapResponse(
+            (edited) => this.editProductSuccess(edited),
+            () => null,
+          ),
+        ),
+      ),
+    ),
+  );
+
   private readonly setIsFetching = this.updater(
     (state, isFetching: boolean) => ({
       ...state,
@@ -86,6 +100,15 @@ export class ProductsStore extends ComponentStore<ProductsStoreState> {
     (state, created: Product) => ({
       ...state,
       list: [...state.list, created],
+    }),
+  );
+
+  private readonly editProductSuccess = this.updater(
+    (state, edited: Product) => ({
+      ...state,
+      list: state.list.map((product) =>
+        product.id === edited.id ? edited : product,
+      ),
     }),
   );
 

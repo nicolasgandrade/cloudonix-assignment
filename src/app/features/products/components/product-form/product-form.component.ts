@@ -15,8 +15,6 @@ import { ProductType } from '../../utils/product-form.utils';
   imports: [ReactiveFormsModule],
 })
 export class ProductFormComponent {
-  @Input() product?: Product;
-
   @Output() productSubmitted = new EventEmitter<Partial<Product>>();
 
   readonly productTypes = ProductType;
@@ -50,6 +48,15 @@ export class ProductFormComponent {
       backlog: new FormControl<number | null>(null, Validators.min(0)),
     }),
   });
+
+  @Input() set product(value: Partial<Product>) {
+    if (!value) {
+      return;
+    }
+
+    this.form.patchValue(value);
+    this.form.controls.sku.disable();
+  }
 
   onSubmit(): void {
     this.productSubmitted.emit(this.form.value);

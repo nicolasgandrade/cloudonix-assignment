@@ -20,6 +20,14 @@
           >
             Del
           </button>
+
+          <button
+            (click)="
+              openEditCreateDialog('edit', product); $event.stopPropagation()
+            "
+          >
+            Edit
+          </button>
         </div>
       </div>
     }
