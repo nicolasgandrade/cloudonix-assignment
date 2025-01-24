@@ -1,0 +1,14 @@
+<form [formGroup]="dynamicForm">
+  <div
+    *ngFor="let pair of dynamicForm.controls.pairs.controls; let i = index"
+    formArrayName="pairs"
+  >
+    <div class="kv-group" [formGroupName]="i">
+      <input formControlName="key" />
+      <input formControlName="value" />
+      <button (click)="removePair(i)">X</button>
+    </div>
+  </div>
+</form>
+
+<button (click)="addPair()">+ Add property</button>
