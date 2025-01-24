@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -14,9 +21,15 @@ import { ProductType } from '../../utils/product-form.utils';
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss',
   imports: [ReactiveFormsModule, IMaskModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class ProductFormComponent {
+export class ProductFormComponent implements AfterViewInit {
   @Output() productSubmitted = new EventEmitter<Partial<Product>>();
+
+  readonly kv: Record<string, string> = {
+    a: 'test',
+    b: 'test 2',
+  };
 
   readonly productTypes = ProductType;
   readonly maskOptions = {
@@ -60,6 +73,10 @@ export class ProductFormComponent {
     }),
   });
 
+  ngAfterViewInit(): void {
+    this.setupAndListenToKeyValueWebComponent();
+  }
+
   @Input() set product(value: Partial<Product>) {
     if (!value) {
       return;
@@ -71,5 +88,18 @@ export class ProductFormComponent {
 
   onSubmit(): void {
     this.productSubmitted.emit(this.form.value);
+  }
+
+  private setupAndListenToKeyValueWebComponent() {
+    const keyValueEditor = document.querySelector(
+      'key-value-editor',
+    ) as HTMLElement;
+
+    keyValueEditor?.addEventListener(
+      'keyValuePairsChanged' as any,
+      (event: CustomEvent) => {
+        console.log('Event received:', event.detail);
+      },
+    );
   }
 }
