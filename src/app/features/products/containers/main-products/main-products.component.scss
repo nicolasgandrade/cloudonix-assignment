@@ -1,15 +1,8 @@
-.products-table {
-  &__item {
-    display: grid;
-    grid-template-columns: 40px repeat(4, minmax(0, 1fr)) 80px auto;
+.product-row {
+  cursor: pointer;
 
-    > div {
-      border-top: 1px solid black;
-      padding: 8px;
-    }
-  }
-
-  &__name {
-    grid-column: span 3 / span 3;
+  &__actions {
+    display: flex;
+    gap: 6px;
   }
 }

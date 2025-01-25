@@ -3,33 +3,46 @@
 @if (isFetching$ | async) {
   Loading...
 } @else {
-  <div class="products-table">
-    @for (product of products$ | async; track $index) {
-      <div
-        role="button"
-        class="products-table__item"
-        (click)="openDetailsDialog(product)"
-      >
-        <div>{{ product.id }}</div>
-        <div>{{ product.sku }}</div>
-        <div class="products-table__name">{{ product.name }}</div>
-        <div>{{ product.cost | currency }}</div>
-        <div>
-          <button
-            (click)="openDeletionDialog(product); $event.stopPropagation()"
-          >
-            Del
-          </button>
+  <div class="overflow-auto">
+    <table class="striped">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">SKU</th>
+          <th scope="col">Name</th>
+          <th scope="col">Cost</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
 
-          <button
-            (click)="
-              openEditCreateDialog('edit', product); $event.stopPropagation()
-            "
-          >
-            Edit
-          </button>
-        </div>
-      </div>
-    }
+      <tbody>
+        @for (product of products$ | async; track $index) {
+          <tr class="product-row" (click)="openDetailsDialog(product)">
+            <th scope="row">{{ product.id }}</th>
+            <td>{{ product.sku }}</td>
+            <td class="products-table__name">{{ product.name }}</td>
+            <td>{{ product.cost | currency }}</td>
+            <td class="product-row__actions">
+              <button
+                class="secondary outline"
+                (click)="openDeletionDialog(product); $event.stopPropagation()"
+              >
+                Delelete
+              </button>
+
+              <button
+                class="primary outline"
+                (click)="
+                  openEditCreateDialog('edit', product);
+                  $event.stopPropagation()
+                "
+              >
+                Edit
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
   </div>
 }
