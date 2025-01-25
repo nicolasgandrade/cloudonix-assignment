@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthorizationService } from '../../../../shared/services/authorization.service';
 
 @Component({
   selector: 'main-login',
@@ -18,5 +20,11 @@ import { FormsModule } from '@angular/forms';
 export class MainLoginComponent {
   token?: string;
 
-  login(): void {}
+  private readonly authService = inject(AuthorizationService);
+  private readonly router = inject(Router);
+
+  login(): void {
+    this.authService.setAuthToken(this.token!);
+    this.router.navigate(['products']);
+  }
 }

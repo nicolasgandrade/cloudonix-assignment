@@ -8,29 +8,20 @@ import { Product } from '../models/product.model';
 export class ProductsService {
   private readonly http = inject(HttpClient);
   private readonly resourceUrl = `${environment.apiUrl}/items`;
-  private readonly headers = { Authorization: 'Bearer 123' };
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.resourceUrl, {
-      headers: this.headers,
-    });
+    return this.http.get<Product[]>(this.resourceUrl);
   }
 
   deleteProduct(id: number): Observable<void> {
-    return this.http.delete<undefined>(`${this.resourceUrl}/${id}`, {
-      headers: this.headers,
-    });
+    return this.http.delete<undefined>(`${this.resourceUrl}/${id}`);
   }
 
   createProduct(product: Partial<Product>): Observable<Product> {
-    return this.http.post<Product>(this.resourceUrl, product, {
-      headers: this.headers,
-    });
+    return this.http.post<Product>(this.resourceUrl, product);
   }
 
   editProduct(id: number, product: Partial<Product>): Observable<Product> {
-    return this.http.patch<Product>(`${this.resourceUrl}/${id}`, product, {
-      headers: this.headers,
-    });
+    return this.http.patch<Product>(`${this.resourceUrl}/${id}`, product);
   }
 }
