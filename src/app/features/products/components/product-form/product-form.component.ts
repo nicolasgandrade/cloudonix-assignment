@@ -13,8 +13,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { IMaskModule } from 'angular-imask';
+import { cloneDeep } from 'lodash';
 import { Product } from '../../models/product.model';
-import { ProductType } from '../../utils/product-form.utils';
 
 @Component({
   selector: 'product-form',
@@ -26,7 +26,6 @@ import { ProductType } from '../../utils/product-form.utils';
 export class ProductFormComponent implements AfterViewInit {
   @Output() productSubmitted = new EventEmitter<Partial<Product>>();
 
-  readonly productTypes = ProductType;
   readonly maskOptions = {
     mask: Number,
     min: 0,
@@ -55,24 +54,16 @@ export class ProductFormComponent implements AfterViewInit {
       validators: [Validators.required],
       nonNullable: true,
     }),
-    profile: new FormGroup({
-      type: new FormControl<ProductType>(ProductType.FURNITURE, {
-        validators: [Validators.required],
-        nonNullable: true,
-      }),
-      available: new FormControl(true, {
-        validators: [Validators.required],
-        nonNullable: true,
-      }),
-      backlog: new FormControl<number | null>(null, Validators.min(0)),
-    }),
   });
 
   initialKeyValueEditorValue: Record<string, string> = {};
+  initialDefaultProfileEditorValue: Record<string, string> = {};
   private keyValueEditorValue: Record<string, string> = {};
+  private defaultProfileEditorValue: Record<string, string> = {};
 
   ngAfterViewInit(): void {
     this.setupAndListenToKeyValueWebComponent();
+    this.setupAndListenToProfileWebComponent();
   }
 
   @Input() set product(value: Partial<Product>) {
@@ -84,10 +75,11 @@ export class ProductFormComponent implements AfterViewInit {
     this.form.controls.sku.disable();
 
     if (!!value.profile) {
+      this.initialDefaultProfileEditorValue = cloneDeep(value.profile);
+
       delete value.profile['type'];
       delete value.profile['available'];
       delete value.profile['backlog'];
-
       this.initialKeyValueEditorValue = value.profile;
     }
   }
@@ -95,7 +87,10 @@ export class ProductFormComponent implements AfterViewInit {
   onSubmit(): void {
     const updatedValue = {
       ...this.form.value,
-      profile: { ...this.form.value.profile, ...this.keyValueEditorValue },
+      profile: {
+        ...this.defaultProfileEditorValue,
+        ...this.keyValueEditorValue,
+      },
     };
     this.productSubmitted.emit(updatedValue);
   }
@@ -109,6 +104,19 @@ export class ProductFormComponent implements AfterViewInit {
       'keyValuePairsChanged' as any,
       (event: CustomEvent) => {
         this.keyValueEditorValue = event.detail;
+      },
+    );
+  }
+
+  private setupAndListenToProfileWebComponent() {
+    const profileEditor = document.querySelector(
+      'profile-editor',
+    ) as HTMLElement;
+
+    profileEditor?.addEventListener(
+      'profileValueChange' as any,
+      (event: CustomEvent) => {
+        this.defaultProfileEditorValue = event.detail;
       },
     );
   }
