@@ -75,16 +75,24 @@ export class ProductFormComponent implements AfterViewInit {
     this.form.controls.sku.disable();
 
     if (!!value.profile) {
-      this.initialDefaultProfileEditorValue = cloneDeep(value.profile);
+      const profileClone = cloneDeep(value.profile);
 
-      delete value.profile['type'];
-      delete value.profile['available'];
-      delete value.profile['backlog'];
-      this.initialKeyValueEditorValue = value.profile;
+      this.initialDefaultProfileEditorValue = {
+        available: profileClone['available'],
+        type: profileClone['type'],
+        backlog: profileClone['backlog'],
+      };
+
+      delete profileClone['type'];
+      delete profileClone['available'];
+      delete profileClone['backlog'];
+      this.initialKeyValueEditorValue = profileClone;
     }
   }
 
   onSubmit(): void {
+    console.log(this.defaultProfileEditorValue);
+    console.log(this.keyValueEditorValue);
     const updatedValue = {
       ...this.form.value,
       profile: {
@@ -92,10 +100,12 @@ export class ProductFormComponent implements AfterViewInit {
         ...this.keyValueEditorValue,
       },
     };
+    console.log(updatedValue);
     this.productSubmitted.emit(updatedValue);
   }
 
   private setupAndListenToKeyValueWebComponent() {
+    this.keyValueEditorValue = this.initialKeyValueEditorValue;
     const keyValueEditor = document.querySelector(
       'key-value-editor',
     ) as HTMLElement;
@@ -103,12 +113,14 @@ export class ProductFormComponent implements AfterViewInit {
     keyValueEditor?.addEventListener(
       'keyValuePairsChanged' as any,
       (event: CustomEvent) => {
+        console.log(event.detail);
         this.keyValueEditorValue = event.detail;
       },
     );
   }
 
   private setupAndListenToProfileWebComponent() {
+    this.defaultProfileEditorValue = this.initialDefaultProfileEditorValue;
     const profileEditor = document.querySelector(
       'profile-editor',
     ) as HTMLElement;
