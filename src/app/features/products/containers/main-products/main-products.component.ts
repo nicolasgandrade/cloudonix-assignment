@@ -56,7 +56,7 @@ export class MainProductsComponent implements OnInit {
     const dialogRef = this.dialog.open<Partial<Product>>(
       EditCreateDialogComponent,
       {
-        width: '90vw',
+        minWidth: '60vw',
         maxHeight: '90vh',
         data: product,
       },

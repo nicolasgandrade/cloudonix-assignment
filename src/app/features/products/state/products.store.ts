@@ -40,7 +40,7 @@ export class ProductsStore extends ComponentStore<ProductsStoreState> {
 
   readonly deleteProduct = this.effect((data$: Observable<number>) =>
     data$.pipe(
-      filter((id) => !!id),
+      filter((id) => !!id || id === 0),
       switchMap((id) =>
         this.productsService.deleteProduct(id).pipe(
           tapResponse(
@@ -73,7 +73,7 @@ export class ProductsStore extends ComponentStore<ProductsStoreState> {
 
   readonly editProduct = this.effect((data$: Observable<Partial<Product>>) =>
     data$.pipe(
-      filter((product) => !!product?.id),
+      filter((product) => !!product?.id || product?.id === 0),
       switchMap((product) =>
         this.productsService.editProduct(product.id!, product).pipe(
           tapResponse(
