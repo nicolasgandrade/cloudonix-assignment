@@ -71,10 +71,14 @@ export class KeyValueEditorComponent implements OnInit, OnDestroy {
         }),
     );
     this.dynamicForm.setControl('pairs', new FormArray([...formPairs]));
+    this.dynamicForm.controls.pairs.controls.forEach((control) =>
+      control.controls.key.disable(),
+    );
   }
 
   private listenToForm(): void {
-    this.dynamicForm.valueChanges.subscribe((value) => {
+    this.dynamicForm.valueChanges.subscribe(() => {
+      const value = this.dynamicForm.getRawValue();
       if (!value?.pairs) {
         this.keyValuePairsChanged.emit({});
         return;
