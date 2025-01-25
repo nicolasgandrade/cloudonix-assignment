@@ -1,4 +1,13 @@
-<button (click)="openEditCreateDialog('create')">+ New product</button>
+<nav>
+  <ul>
+    <li><strong>Cloudonix Assignment</strong></li>
+  </ul>
+  <ul>
+    <li>
+      <button (click)="openEditCreateDialog('create')">+ New product</button>
+    </li>
+  </ul>
+</nav>
 
 @if (isFetching$ | async) {
   Loading...
