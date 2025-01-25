@@ -4,3 +4,9 @@
   border-radius: 4px;
   padding: 16px;
 }
+
+.action-buttons {
+  display: flex;
+  gap: 6px;
+  justify-content: end;
+}
