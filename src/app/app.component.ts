@@ -8,7 +8,11 @@ import { ProfileEditorComponent } from './shared/components/profile-editor/profi
   selector: 'app-root',
   imports: [RouterOutlet],
   template: `<router-outlet />`,
-  styleUrl: './app.component.scss',
+  styles: `
+    :host {
+      display: block;
+    }
+  `,
 })
 export class AppComponent {
   title = 'cloudonix-assignment';
