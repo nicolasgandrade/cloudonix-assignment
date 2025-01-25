@@ -40,7 +40,6 @@ export class ProfileEditorComponent implements OnInit {
   }
 
   @Input() set profileValue(value: FormValueHelper) {
-    console.log(value);
     this.profileForm.patchValue(value);
     this.profileValueChange.emit(this.profileForm.value);
   }

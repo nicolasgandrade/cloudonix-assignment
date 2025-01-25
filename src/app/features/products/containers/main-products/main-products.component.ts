@@ -31,6 +31,7 @@ export class MainProductsComponent implements OnInit {
   openDetailsDialog(product: Product): void {
     this.dialog.open(DetailsDialogComponent, {
       maxWidth: '90vw',
+      minWidth: '50vw',
       data: product,
     });
   }

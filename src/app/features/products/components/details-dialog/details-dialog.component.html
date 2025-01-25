@@ -4,6 +4,20 @@
 <p>Description: {{ data.description }}</p>
 <p>SKU: {{ data.sku }}</p>
 <p>Price: {{ data.cost | currency }}</p>
-<p>Additional information: {{ data.profile | json }}</p>
 
-<button (click)="dialogRef.close()">close</button>
+<hr />
+
+<div>
+  <h5>Additional information:</h5>
+
+  @for (item of dynamicFields | keyvalue; track $index) {
+    <div>
+      <span class="capitalize">{{ item.key }}: </span>
+      <span>{{ item.value }}</span>
+    </div>
+  }
+</div>
+
+<hr />
+
+<button (click)="dialogRef.close()">Close</button>
