@@ -91,8 +91,6 @@ export class ProductFormComponent implements AfterViewInit {
   }
 
   onSubmit(): void {
-    console.log(this.defaultProfileEditorValue);
-    console.log(this.keyValueEditorValue);
     const updatedValue = {
       ...this.form.value,
       profile: {
@@ -100,7 +98,6 @@ export class ProductFormComponent implements AfterViewInit {
         ...this.keyValueEditorValue,
       },
     };
-    console.log(updatedValue);
     this.productSubmitted.emit(updatedValue);
   }
 
@@ -113,7 +110,6 @@ export class ProductFormComponent implements AfterViewInit {
     keyValueEditor?.addEventListener(
       'keyValuePairsChanged' as any,
       (event: CustomEvent) => {
-        console.log(event.detail);
         this.keyValueEditorValue = event.detail;
       },
     );

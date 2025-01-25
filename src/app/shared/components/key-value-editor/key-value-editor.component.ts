@@ -38,6 +38,8 @@ export class KeyValueEditorComponent implements OnInit, OnDestroy {
     >([]),
   });
 
+  private keysToDelete: string[] = [];
+
   private readonly onDestroy$ = new Subject<void>();
 
   @Input() set keyValuePairs(pairs: Record<string, string>) {
@@ -59,6 +61,10 @@ export class KeyValueEditorComponent implements OnInit, OnDestroy {
   }
 
   removePair(index: number): void {
+    const targetKey =
+      this.dynamicForm.controls.pairs?.controls[index].getRawValue()?.key || '';
+
+    this.keysToDelete.push(targetKey);
     this.dynamicForm.controls.pairs.removeAt(index);
   }
 
@@ -89,6 +95,15 @@ export class KeyValueEditorComponent implements OnInit, OnDestroy {
           .filter((pair) => !!pair.key)
           .map((pair) => [pair.key, pair.value]),
       );
+
+      this.keysToDelete
+        .filter((key) => !!key)
+        .forEach((key) => {
+          record[key] = null;
+        });
+
+      console.log(this.keysToDelete);
+      console.log(record);
 
       this.keyValuePairsChanged.emit(record);
     });
