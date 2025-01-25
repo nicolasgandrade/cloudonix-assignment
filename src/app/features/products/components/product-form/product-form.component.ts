@@ -26,11 +26,6 @@ import { ProductType } from '../../utils/product-form.utils';
 export class ProductFormComponent implements AfterViewInit {
   @Output() productSubmitted = new EventEmitter<Partial<Product>>();
 
-  readonly kv: Record<string, string> = {
-    a: 'test',
-    b: 'test 2',
-  };
-
   readonly productTypes = ProductType;
   readonly maskOptions = {
     mask: Number,
@@ -73,6 +68,9 @@ export class ProductFormComponent implements AfterViewInit {
     }),
   });
 
+  initialKeyValueEditorValue: Record<string, string> = {};
+  private keyValueEditorValue: Record<string, string> = {};
+
   ngAfterViewInit(): void {
     this.setupAndListenToKeyValueWebComponent();
   }
@@ -84,10 +82,22 @@ export class ProductFormComponent implements AfterViewInit {
 
     this.form.patchValue(value);
     this.form.controls.sku.disable();
+
+    if (!!value.profile) {
+      delete value.profile['type'];
+      delete value.profile['available'];
+      delete value.profile['backlog'];
+
+      this.initialKeyValueEditorValue = value.profile;
+    }
   }
 
   onSubmit(): void {
-    this.productSubmitted.emit(this.form.value);
+    const updatedValue = {
+      ...this.form.value,
+      profile: { ...this.form.value.profile, ...this.keyValueEditorValue },
+    };
+    this.productSubmitted.emit(updatedValue);
   }
 
   private setupAndListenToKeyValueWebComponent() {
@@ -98,7 +108,7 @@ export class ProductFormComponent implements AfterViewInit {
     keyValueEditor?.addEventListener(
       'keyValuePairsChanged' as any,
       (event: CustomEvent) => {
-        console.log('Event received:', event.detail);
+        this.keyValueEditorValue = event.detail;
       },
     );
   }

@@ -60,7 +60,6 @@ export class KeyValueEditorComponent implements OnInit, OnDestroy {
 
   removePair(index: number): void {
     this.dynamicForm.controls.pairs.removeAt(index);
-    console.log(this.dynamicForm.controls.pairs);
   }
 
   private setFormFromPairs(pairs: Record<string, string>): void {
