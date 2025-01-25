@@ -28,7 +28,7 @@ export class MainProductsComponent implements OnInit {
 
   openDetailsDialog(product: Product): void {
     this.dialog.open(DetailsDialogComponent, {
-      width: '300px',
+      maxWidth: '90vw',
       data: product,
     });
   }
@@ -37,7 +37,7 @@ export class MainProductsComponent implements OnInit {
     const dialogRef = this.dialog.open<{ shouldRemove: boolean }>(
       DeletionDialogComponent,
       {
-        width: '300px',
+        maxWidth: '90vw',
         data: product,
       },
     );
@@ -53,7 +53,8 @@ export class MainProductsComponent implements OnInit {
     const dialogRef = this.dialog.open<Partial<Product>>(
       EditCreateDialogComponent,
       {
-        width: '300px',
+        width: '90vw',
+        maxHeight: '90vh',
         data: product,
       },
     );

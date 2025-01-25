@@ -1,9 +1,9 @@
 <form [formGroup]="profileForm">
-  <h2>Profile</h2>
+  <h3>Product profile</h3>
 
-  <div class="product-form__control">
-    <label>Type</label>
-    <select name="type" formControlName="type">
+  <div>
+    <label for="type">Type</label>
+    <select id="type" name="type" formControlName="type">
       <option [value]="productTypes.FURNITURE">Furniture</option>
       <option [value]="productTypes.EQUIPMENT">Equipment</option>
       <option [value]="productTypes.STATIONARY">Stationary</option>
@@ -11,13 +11,13 @@
     </select>
   </div>
 
-  <div class="product-form__control">
-    <label>Available</label>
-    <input type="checkbox" formControlName="available" />
+  <div>
+    <label for="available">Available</label>
+    <input id="available" type="checkbox" formControlName="available" />
   </div>
 
-  <div class="product-form__control">
-    <label>Backlog</label>
-    <input type="number" formControlName="backlog" min="0" />
+  <div>
+    <label for="backlog">Backlog</label>
+    <input id="backlog" type="number" formControlName="backlog" min="0" />
   </div>
 </form>

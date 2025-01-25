@@ -3,12 +3,14 @@
     *ngFor="let pair of dynamicForm.controls.pairs.controls; let i = index"
     formArrayName="pairs"
   >
-    <div class="kv-group" [formGroupName]="i">
-      <input formControlName="key" />
-      <input formControlName="value" />
+    <fieldset role="group" [formGroupName]="i">
+      <input placeholder="Key" formControlName="key" />
+      <input placeholder="Value" formControlName="value" />
       <button (click)="removePair(i)">X</button>
-    </div>
+    </fieldset>
   </div>
 </form>
 
-<button type="button" (click)="addPair()">+ Add custom property</button>
+<button type="button" class="outline" (click)="addPair()">
+  + Add custom property
+</button>
