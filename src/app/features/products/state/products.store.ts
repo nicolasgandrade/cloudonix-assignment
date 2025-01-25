@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { tapResponse } from '@ngrx/operators';
+import { ToastrService } from 'ngx-toastr';
 import { filter, Observable, switchMap, tap } from 'rxjs';
 import { Product } from '../models/product.model';
 import { ProductsService } from '../services/products.service';
@@ -18,6 +19,7 @@ const initialState: ProductsStoreState = {
 @Injectable()
 export class ProductsStore extends ComponentStore<ProductsStoreState> {
   private readonly productsService = inject(ProductsService);
+  private readonly toastr = inject(ToastrService);
 
   readonly list$ = this.select(({ list }) => list);
   readonly isFetching$ = this.select(({ isFetching }) => isFetching);
@@ -29,7 +31,7 @@ export class ProductsStore extends ComponentStore<ProductsStoreState> {
         this.productsService.getProducts().pipe(
           tapResponse(
             (items) => this.fetchItemsSuccess(items),
-            () => null,
+            () => this.showError(),
           ),
         ),
       ),
@@ -42,8 +44,11 @@ export class ProductsStore extends ComponentStore<ProductsStoreState> {
       switchMap((id) =>
         this.productsService.deleteProduct(id).pipe(
           tapResponse(
-            () => this.deleteItemSuccess(id),
-            () => null,
+            () => {
+              this.deleteItemSuccess(id);
+              this.showSuccess('The product was deleted.');
+            },
+            () => this.showError(),
           ),
         ),
       ),
@@ -55,8 +60,11 @@ export class ProductsStore extends ComponentStore<ProductsStoreState> {
       switchMap((product) =>
         this.productsService.createProduct(product).pipe(
           tapResponse(
-            (created) => this.createItemSuccess(created),
-            () => null,
+            (created) => {
+              this.createItemSuccess(created);
+              this.showSuccess('The product was created.');
+            },
+            () => this.showError(),
           ),
         ),
       ),
@@ -69,8 +77,11 @@ export class ProductsStore extends ComponentStore<ProductsStoreState> {
       switchMap((product) =>
         this.productsService.editProduct(product.id!, product).pipe(
           tapResponse(
-            (edited) => this.editProductSuccess(edited),
-            () => null,
+            (edited) => {
+              this.editProductSuccess(edited);
+              this.showSuccess('The product was edited.');
+            },
+            () => this.showError(),
           ),
         ),
       ),
@@ -114,5 +125,16 @@ export class ProductsStore extends ComponentStore<ProductsStoreState> {
 
   constructor() {
     super(initialState);
+  }
+
+  private showSuccess(message: string) {
+    this.toastr.success(message, 'Success!');
+  }
+
+  private showError() {
+    this.toastr.error(
+      'We had a problem processing your action, please try again later.',
+      'Error!',
+    );
   }
 }

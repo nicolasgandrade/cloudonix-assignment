@@ -6,13 +6,13 @@ import { ProfileEditorComponent } from './shared/components/profile-editor/profi
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
   template: `<router-outlet />`,
   styles: `
     :host {
       display: block;
     }
   `,
+  imports: [RouterOutlet],
 })
 export class AppComponent {
   title = 'cloudonix-assignment';
